@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="kr.kjun.gongmask" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<application android:label="GongMask">
-		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="Google Map Key" />
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="Google Map Key" /> 
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
