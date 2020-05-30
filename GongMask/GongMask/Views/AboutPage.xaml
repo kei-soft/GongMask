@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="GongMask.Views.AboutPage"
+             xmlns:vm="clr-namespace:GongMask.ViewModels"
+             Title="공공마스크 구입 안내 ">
+    <StackLayout Padding="10">
+        <Label Text="▶공적 공급 마스크 나는 어느 요일에 사나요?" TextColor="Black"/>
+        <Image Source="info.png" Aspect="AspectFit"/>
+        <Label Text="▶대리구매 대상" TextColor="Black"/>
+        <Label Text=" 장애인, 장기요양급여 수급자, 2010년 포함 그 이후 출생한 어린이, 1940년 포함 그 이전 출생한 어르신 "/>
+        <Label Text="  *영유아는 호흡에 장애를 줄 수 있어 마스크 미착용 권고 "/>
+
+        <Label Text="▶대리구매 방식" TextColor="Black"/>
+        <Label Text=" 주민등록상 동거인(장애인은 대리인)이 대리구매 대상자(어린이 등) 의 5부제 요일에 구매 가능 "/>
+
+        <Label Text="▶구매 시기" TextColor="Black"/>
+        <Label Text=" 3월 9일(월) 부터 대리구매 허용 *우체국, 농협은 중복구매 확인시스템 구축 때까지 1인 1매 판매 "/>
+
+        <Label Text="▶필요 서류" TextColor="Black"/>
+        <Label Text=" 본인 신분증, 주민등록등본(주민번호가 모두 기재된 것) 장애인 복지카드(장애인 등록증) "/>
+        <Label Text=" 장기요양환자의 경우 증명서류 "/>
+
+        <Label Text="▶상담 안내" TextColor="Black"/>
+        <Label Text=" 식품의약품안전처 종합상담센터 1577-1255 "/>
+        <Label Text=" 정부민원안내  콜센터 110 "/>
+    </StackLayout>
+    
+</ContentPage>
