@@ -17,45 +17,82 @@ namespace GongMask.Droid
 {
     public class CustomMapRenderer : MapRenderer
     {
-        GoogleMap map;
-        List<CustomPin> customPins;
+        #region Field
 
+        /// <summary>
+        /// Map 입니다.
+        /// </summary>
+        GoogleMap googleMap;
+        /// <summary>
+        /// Map 에 표시될 Pin 입니다.
+        /// </summary>
+        List<CustomPin> customPins;
+        /// <summary>
+        /// 100 개 이상인 경우 초록색
+        /// </summary>
         Android.Graphics.Color Color_100 = Android.Graphics.Color.Green;
+        /// <summary>
+        /// 30~99 개 인경우 노란색
+        /// </summary>
         Android.Graphics.Color Color_9930 = Android.Graphics.Color.Yellow;
+        /// <summary>
+        /// 2~29 개 인 경우 빨간색
+        /// </summary>
         Android.Graphics.Color Color_2902 = Android.Graphics.Color.Red;
+        /// <summary>
+        /// 0~1 개 인 경우 회색
+        /// </summary>
         Android.Graphics.Color Color_0100 = Android.Graphics.Color.Gray;
 
+        #endregion
+
+        // Constructor
+        #region CustomMapRenderer
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public CustomMapRenderer(Context context) : base(context)
         {
         }
 
+        #endregion
+
+        // Event Methods (override)
+        #region OnElementChanged(e)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Map> e)
         {
             base.OnElementChanged(e);
 
             if (e.NewElement != null)
             {
-                var formsMap = (CustomMap)e.NewElement;
-                customPins = formsMap.CustomPins;
+                var customMap = (CustomMap)e.NewElement;
+                customPins = customMap.CustomPins;
                 Control.GetMapAsync(this);
             }
         }
 
-        protected override void OnMapReady(GoogleMap map)
-        {
-            base.OnMapReady(map);
-            this.map = map;
-            //this.map.MarkerClick += OnPinClicked;
-        }
+        #endregion
 
-        private void OnPinClicked(object sender, GoogleMap.MarkerClickEventArgs e)
-        {
-            e.Handled = true;
-        }
+        // Methods (override)
+        #region CreateMarker(Pin)
 
+        /// <summary>
+        /// 마커의 위치와 라벨을 설정합니다.
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <returns></returns>
         protected override MarkerOptions CreateMarker(Pin pin)
         {
             CustomPin customPin = pin as CustomPin;
+
+            if (customPin == null) return null;
 
             var marker = new MarkerOptions();
 
@@ -64,15 +101,7 @@ namespace GongMask.Droid
                 marker.SetPosition(new LatLng(pin.Position.Latitude, pin.Position.Longitude));
                 marker.SetTitle(customPin.Name);
                 marker.SetSnippet(pin.Address);
-
-                if (customPin == null)
-                {
-                    marker.SetIcon(GenerateMyCustomDrawnOverlay(125, 60, "", pin.Address));
-                }
-                else
-                {
-                    marker.SetIcon(GenerateMyCustomDrawnOverlay(125, 60, customPin.Label, pin.Address));
-                }
+                marker.SetIcon(GenerateMyCustomDrawnOverlay(125, 60, customPin.Label));
             }
             catch
             {
@@ -81,8 +110,33 @@ namespace GongMask.Droid
 
             return marker;
         }
-       
-        private BitmapDescriptor GenerateMyCustomDrawnOverlay(int pintWidth, int pintHeight, string text, string sDataType)
+
+        #endregion
+        #region OnMapReady(GoogleMap)
+
+        /// <summary>
+        /// 맵이 준비 상태인 경우 처리합니다.
+        /// </summary>
+        /// <param name="map">map</param>
+        protected override void OnMapReady(GoogleMap googleMap)
+        {
+            base.OnMapReady(map);
+            this.map = googleMap;
+        }
+
+        #endregion
+
+        // Methods (private)
+        #region GenerateMyCustomDrawnOverlay(pintWidth, pintHeight, text)
+
+        /// <summary>
+        /// 마커를 표시할 도형과 텍스트를 그립니다.
+        /// </summary>
+        /// <param name="pintWidth">그려질 도형의 크기 너비</param>
+        /// <param name="pintHeight">그려질 도형의 크기 높이</param>
+        /// <param name="text">내용</param>
+        /// <returns></returns>
+        private BitmapDescriptor GenerateMyCustomDrawnOverlay(int pintWidth, int pintHeight, string text)
         {
             string maskCountLabel = string.Empty;
 
@@ -115,18 +169,36 @@ namespace GongMask.Droid
                     maskCountLabel = "x";
                 }
 
+                // 비정상적인 값(공백)이 들어온 경우 x 로 표시
                 if (string.IsNullOrEmpty(maskCountLabel))
                 {
                     maskCountLabel = "x";
                 }
 
                 Android.Graphics.Color color = Color_0100;
-                if (text == "plenty") color = Color_100;
-                else if (text == "some") color = Color_9930;
-                else if (text == "few") color = Color_2902;
-                else if (text == "empty") color = Color_0100;
-                else color = Color_0100;
 
+                if (text == "plenty")
+                {
+                    color = Color_100;
+                }
+                else if (text == "some")
+                {
+                    color = Color_9930;
+                }
+                else if (text == "few")
+                {
+                    color = Color_2902;
+                }
+                else if (text == "empty")
+                {
+                    color = Color_0100;
+                }
+                else
+                {
+                    color = Color_0100;
+                }
+
+                // 도형안의 텍스트의 왼쪽 마진
                 //int leftmargin = 0;
                 int leftmargin = 19;
 
@@ -163,7 +235,10 @@ namespace GongMask.Droid
 
             BitmapDescriptor icon = BitmapDescriptorFactory.FromBitmap(objBitmap);
             objBitmap.Recycle();
-            return (icon);
+
+            return icon;
         }
+
+        #endregion
     }
 }
